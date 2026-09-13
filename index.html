@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Therian Chat Around the World</title>
+<style>
+:root{--bg:#0d0d12;--panel:#171720;--panel2:#20202b;--text:#f5f5f7;--muted:#a8a8b5;--accent:#9b6cff;--accent2:#6ee7b7;--danger:#ff6b81}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(circle at top,#211733 0,#0d0d12 45%);color:var(--text);height:100vh;overflow:hidden}
+.app{height:100vh;display:flex}.sidebar{width:300px;background:rgba(15,15,22,.96);border-right:1px solid #292936;padding:18px;display:flex;flex-direction:column;gap:14px}
+.logo{font-weight:800;font-size:21px}.logo span{color:var(--accent)}.tag{font-size:12px;color:var(--muted);margin-top:-9px}
+.profile{background:linear-gradient(145deg,#282038,#191923);border:1px solid #3a3150;border-radius:18px;padding:14px;display:flex;gap:11px;align-items:center;cursor:pointer}
+.avatar{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:25px;background:#302740;border:2px solid #8c67e8;flex:none}.profile strong{display:block}.profile small{color:var(--muted)}
+.nav button,.room{width:100%;border:0;background:transparent;color:var(--text);padding:11px 12px;border-radius:12px;text-align:left;cursor:pointer;font-size:14px}.nav button:hover,.room:hover,.room.active{background:var(--panel2)}.nav{display:grid;gap:4px}
+.section-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#777785;margin:8px 5px 0}
+.rooms{display:grid;gap:4px}.room{display:flex;justify-content:space-between}.count{color:var(--muted);font-size:12px}
+.main{flex:1;display:flex;min-width:0}.chat{flex:1;display:flex;flex-direction:column;min-width:0}.chat-head{height:70px;border-bottom:1px solid #292936;display:flex;align-items:center;padding:0 22px;justify-content:space-between}.chat-head h2{font-size:17px;margin:0}.chat-head p{font-size:12px;color:var(--muted);margin:3px 0 0}.online{color:var(--accent2);font-size:13px}
+.messages{flex:1;overflow:auto;padding:24px;display:flex;flex-direction:column;gap:17px}.msg{display:flex;gap:11px;max-width:760px}.msg.me{align-self:flex-end;flex-direction:row-reverse}.msg .avatar{width:40px;height:40px;font-size:20px;border-width:1px}.bubble{background:var(--panel);border:1px solid #292936;border-radius:15px;padding:10px 13px}.me .bubble{background:#352557;border-color:#563f83}.meta{font-size:11px;color:var(--muted);margin-bottom:4px}.bubble p{margin:0;line-height:1.4}.composer{padding:15px 20px;border-top:1px solid #292936;display:flex;gap:9px}.composer input{flex:1;background:#181820;color:white;border:1px solid #30303c;border-radius:13px;padding:12px 14px;outline:none}.composer input:focus{border-color:var(--accent)}.send,.save{border:0;background:var(--accent);color:white;border-radius:12px;padding:0 17px;font-weight:700;cursor:pointer}
+.right{width:250px;border-left:1px solid #292936;background:rgba(15,15,22,.75);padding:20px}.right h3{margin:0 0 15px;font-size:14px}.person{display:flex;gap:9px;align-items:center;margin:12px 0}.person .avatar{width:34px;height:34px;font-size:17px;border:1px solid #55456f}.person small{color:var(--muted);display:block}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;place-items:center;padding:20px}.modal.open{display:grid}.card{width:min(420px,100%);background:#171720;border:1px solid #343444;border-radius:20px;padding:22px;box-shadow:0 20px 70px #000}.card h2{margin-top:0}.label{font-size:12px;color:var(--muted);margin:14px 0 6px}.card input{width:100%;padding:12px;border-radius:11px;border:1px solid #363642;background:#101016;color:white}.avatars{display:flex;gap:8px;flex-wrap:wrap}.pick{width:44px;height:44px;border-radius:50%;border:1px solid #444;background:#28202f;font-size:23px;cursor:pointer}.pick.selected{outline:2px solid var(--accent)}.actions{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}.cancel{border:1px solid #3a3a47;background:transparent;color:white;border-radius:11px;padding:10px 14px;cursor:pointer}
+@media(max-width:850px){.right{display:none}.sidebar{width:235px}}@media(max-width:600px){.sidebar{width:70px;padding:10px}.logo,.tag,.profile div:not(.avatar),.nav button span,.section-title,.room span:first-child{display:none}.profile{justify-content:center;padding:8px}.rooms .room{justify-content:center}.rooms{gap:6px}.messages{padding:15px}.chat-head{padding:0 14px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="logo">🌎 <span>Therian Chat</span></div>
+  <div class="tag">Around the world</div>
+  <div class="profile" onclick="openProfile()"><div class="avatar" id="sideAvatar">🦊</div><div><strong id="sideName">Your Name</strong><small>Click to edit profile</small></div></div>
+  <div class="nav"><button>🏠 <span>Home</span></button><button>🔎 <span>Discover therians</span></button><button>💬 <span>Messages</span></button></div>
+  <div class="section-title">Chat rooms</div>
+  <div class="rooms"><button class="room active"><span>🌎 World Chat</span><span class="count">128</span></button><button class="room"><span>🦊 Fox Therians</span><span>42</span></button><button class="room"><span>🐺 Wolf Therians</span><span>67</span></button><button class="room"><span>🐱 Cat Therians</span><span>31</span></button><button class="room"><span>🎨 Art & Masks</span><span>54</span></button></div>
+</aside>
+<main class="main">
+<section class="chat">
+<header class="chat-head"><div><h2>🌎 World Chat</h2><p>Meet therians from around the world</p></div><div class="online">● 128 online</div></header>
+<div class="messages" id="messages">
+  <div class="msg"><div class="avatar">🐺</div><div class="bubble"><div class="meta">LunaWolf · Canada</div><p>Hey everyone! Anyone else making a new mask this weekend? 🐺🎨</p></div></div>
+  <div class="msg"><div class="avatar">🦊</div><div class="bubble"><div class="meta">Foxie · United Kingdom</div><p>Hi! I'm working on a red fox mask right now!</p></div></div>
+  <div class="msg"><div class="avatar">🐈</div><div class="bubble"><div class="meta">Mochi · Japan</div><p>Nice! I'd love to see it when you're done ✨</p></div></div>
+  <div class="msg me"><div class="avatar" id="chatAvatar">🦊</div><div class="bubble"><div class="meta" id="chatName">Your Name</div><p>Welcome to Therian Chat! 🌎</p></div></div>
+</div>
+<form class="composer" onsubmit="sendMessage(event)"><input id="messageInput" placeholder="Message the world chat..." autocomplete="off"><button class="send">Send</button></form>
+</section>
+<aside class="right"><h3>🌟 Online now</h3><div class="person"><div class="avatar">🐺</div><div><b>LunaWolf</b><small>Canada</small></div></div><div class="person"><div class="avatar">🦊</div><div><b>Foxie</b><small>United Kingdom</small></div></div><div class="person"><div class="avatar">🐈</div><div><b>Mochi</b><small>Japan</small></div></div><div class="person"><div class="avatar">🐾</div><div><b>WildPaws</b><small>Australia</small></div></div></aside>
+</main>
+</div>
+
+<div class="modal" id="modal">
+<div class="card">
+<h2>Customize your profile</h2>
+<div class="label">Display name</div><input id="nameInput" maxlength="24" placeholder="Your therian name">
+<div class="label">Choose an avatar</div>
+<div class="avatars" id="avatarChoices"></div>
+<div class="actions"><button class="cancel" onclick="closeProfile()">Cancel</button><button class="save" onclick="saveProfile()">Save profile</button></div>
+</div>
+</div>
+<script>
+const emojis=["🦊","🐺","🐈","🐾","🦝","🐇","🦌","🐆","🐻","🐯","🦋","🌙"];
+let avatar=localStorage.getItem("therianAvatar")||"🦊";
+let name=localStorage.getItem("therianName")||"Your Name";
+const $=id=>document.getElementById(id);
+function render(){["sideAvatar","chatAvatar"].forEach(id=>$(id).textContent=avatar);["sideName","chatName"].forEach(id=>$(id).textContent=name)}
+function openProfile(){ $("nameInput").value=name; $("avatarChoices").innerHTML=emojis.map(e=>`<button type="button" class="pick ${e===avatar?"selected":""}" onclick="chooseAvatar('${e}',this)">${e}</button>`).join("");$("modal").classList.add("open")}
+function chooseAvatar(e,el){avatar=e;document.querySelectorAll(".pick").forEach(x=>x.classList.remove("selected"));el.classList.add("selected")}
+function closeProfile(){$("modal").classList.remove("open")}
+function saveProfile(){name=$("nameInput").value.trim()||"Therian";localStorage.setItem("therianName",name);localStorage.setItem("therianAvatar",avatar);render();closeProfile()}
+function sendMessage(ev){ev.preventDefault();const input=$("messageInput"),text=input.value.trim();if(!text)return;const d=document.createElement("div");d.className="msg me";d.innerHTML=`<div class="avatar">${avatar}</div><div class="bubble"><div class="meta">${escapeHtml(name)}</div><p>${escapeHtml(text)}</p></div>`;$("messages").appendChild(d);input.value="";$("messages").scrollTop=$("messages").scrollHeight}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+render();
+$("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeProfile()});
+</script>
+</body>
+</html>
